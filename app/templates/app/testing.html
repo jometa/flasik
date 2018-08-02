@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'commons/head.html' %}
+</head>
+
+<body>
+
+  {% include 'app/commons/nav.html' %}
+  <style>
+  </style>
+
+  <section id="intro">
+    <div class="intro-container">
+      <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+
+        <ol class="carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+          <div class="carousel-item active">
+            <div class="carousel-background"><img src="/static/img/bg.jpg" alt=""></div>
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2>Pengujian</h2>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                  Mulai
+                </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section><!-- #intro -->
+  <main id="main">
+    <section class="my-0 py-4">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Pilih Tipe Pengujian</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="">
+            <div class="form-group">
+              <label>Pilih Tipe Pengujian</label>
+              <select class="form-control" name="test-type">
+                <option value="nb">Menggunakan Indexing naive-bayes</option>
+                <option value="non-nb">Tanpa Indexing</option>
+              </select>
+              <button type="submit" class="btn btn-primary">Selanjutnya</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% include 'commons/footer.html' %}
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  {% include 'commons/bottom-script.html' %}
+  <script src="/static/js/main-static.js"></script>
+
+</body>
+</html>

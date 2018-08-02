@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'commons/head.html' %}
+</head>
+
+<body>
+
+  {% include 'app/commons/nav.html' %}
+  <style>
+  </style>
+
+  <section id="intro">
+    <div class="intro-container">
+      <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+
+        <ol class="carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+          <div class="carousel-item active">
+            <div class="carousel-background"><img src="/static/img/bg.jpg" alt=""></div>
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2>Kesimpulan: {{ kesimpulan }}</h2>
+                <h2>Similaritas: {{ sim * 100 }}</h2>
+                {% if sim == 1.0 %}
+                  <h4>Tidak dapat menambahkan data karena terdapat duplikasi.</h4>
+                {% else %}
+                  <h4>Sukses menambahkan data ke database.</h4>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section><!-- #intro -->
+
+  <main id="main">
+      <section class="my-0 py-4">
+        <div class="container">
+          <div class="row">
+  
+            <div class="col-md-6 mx-auto my-4">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Attribute</th>
+                      <th>Kasus Lama</th>
+                      <th>Kasus Baru</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for k, v1, v2 in most_sim_ins %}
+                        {% if v1 != v2 %}
+                          <tr class="table-danger">
+                        {% else %}
+                          <tr>
+                        {% endif %}
+                          <td>{{ k }}</td>
+                          <td>{{ v1 }}</td>
+                          <td>{{ v2 }}</td>
+                        </tr>
+                      {% endfor %}
+                  </tbody>
+                </table>
+                <ul class="list-group">
+                  
+                </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+  {% include 'commons/footer.html' %}
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  {% include 'commons/bottom-script.html' %}
+  <script src="/static/js/main-static.js"></script>
+
+</body>
+</html>

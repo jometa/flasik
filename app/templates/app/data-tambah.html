@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include 'commons/head.html' %}
+</head>
+
+<body>
+
+  {% include 'app/commons/nav.html' %}
+  <style>
+      #intro {
+        height: 50vh;
+      }
+      #intro .carousel-item {
+        height: 50vh;
+      }
+  </style>
+
+  <section id="intro">
+    <div class="intro-container">
+      <div id="introCarousel" class="carousel  slide carousel-fade" data-ride="carousel">
+
+        <ol class="carousel-indicators"></ol>
+
+        <div class="carousel-inner" role="listbox">
+
+          <div class="carousel-item active">
+            <div class="carousel-background"><img src="/static/img/bg.jpg" alt=""></div>
+            <div class="carousel-container">
+              <div class="carousel-content">
+                <h2>Tambah Hasil Lab</h2>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section><!-- #intro -->
+  <main id="main">
+    <section class="my-0 py-4 bg-dark">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 mx-auto">
+            <div class="card">
+              <div class="card-header">
+                Masukan Data Laboratorium
+              </div>
+              <div class="card-body">
+                <form action="" method="POST">
+                  <div class="form-group">
+                    <label>Jenis Ikan</label>
+                    <select class="form-control" name="jenis_ikan_id">
+                      {% for ji in list_jenis_ikan %}
+                        <option value="{{ ji.id }}">{{ ji.nama }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  {% for atr in attrs %}
+                    {% if atr[1] == 'radio' %}
+                        <fieldset class="form-group mb-3" style="border-bottom: 1px solid #DDD;">
+                          <div class="row">
+                            <legend class="col-form-label col-sm-6 pt-0">
+                              {{ atr[0] }}
+                            </legend>
+                            <div class="col-sm-6">
+                              {% if atr|length == 3 %}
+                                {% for v, k in atr[2] %}
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="{{ atr[0] }}" 
+                                      id="exampleRadios2" value="{{ v }}"
+                                      {% if loop.index0 == 0 %}
+                                        checked
+                                      {% endif %} >
+                                    <label class="form-check-label" for="exampleRadios2">
+                                      {{ k }}
+                                    </label>
+                                  </div>
+                                {% endfor %}
+                              {% else %}
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="{{ atr[0] }}" id="exampleRadios2" value="1">
+                                  <label class="form-check-label" for="exampleRadios2">
+                                    Positif
+                                  </label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="radio" name="{{ atr[0] }}" value="0" checked>
+                                  <label class="form-check-label" for="exampleRadios1">
+                                    Negatif
+                                  </label>
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </fieldset>
+                    {% elif atr[1]  == 'select' %}
+                      <div class="form-group row pb-3" style="border-bottom: 1px solid #DDD;">
+                        <label class="col-sm-6 col-form-label">{{ atr[0] }}</label>
+                        <div class="col-sm-6">
+                          <select class="form-control" name="{{ atr[0] }}">
+                            {% for v, k in atr[2] %}
+                              <option value="{{ v }}">{{k}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    {% endif %}
+
+                  {% endfor %}
+
+                  <div class="form-group">
+                    <label>Kesimpulan</label>
+                    <select class="form-control" name="kesimpulan">
+                      <option value="1">Positif Vibrio Alginolyctus</option>
+                      <option value="0">Negatif Vibrio Alginolyctus</option>
+                    </select>
+                  </div>
+
+                  <button type="submit" class="btn btn-info">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {% include 'commons/footer.html' %}
+
+  <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
+  {% include 'commons/bottom-script.html' %}
+  <script src="/static/js/main-static.js"></script>
+
+</body>
+</html>
