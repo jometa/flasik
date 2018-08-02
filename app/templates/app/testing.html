@@ -63,8 +63,19 @@
                 <option value="nb">Menggunakan Indexing naive-bayes</option>
                 <option value="non-nb">Tanpa Indexing</option>
               </select>
-              <button type="submit" class="btn btn-primary">Selanjutnya</button>
             </div>
+            
+            <div class="form-group">
+              <label>Jumlah Fold</label>
+              <input name="npart" class="form-control" type="number" min="3" max="6"/>
+            </div>
+
+            <div class="form-group">
+              <label>Parameter SMOTE</label>
+              <input name="nsmote" class="form-control" type="number" min="2" max="6"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Selanjutnya</button>
           </form>
         </div>
       </div>
