@@ -82,7 +82,7 @@ class CVResult:
 
 def cross_validation(data, cv_p=5, indexing=True):
 
-    def split_data(n_parts=5, data=data):
+    def split_data(n_parts=cv_p, data=data):
         parts = [ [] for i in range(n_parts) ]
         for i, x in enumerate(data):
             index = i % n_parts

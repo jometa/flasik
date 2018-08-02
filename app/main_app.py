@@ -1,5 +1,6 @@
 # Import what we need
 import functools
+import random
 import time
 from flask import (
   Blueprint, flash, g, redirect, render_template,
@@ -133,16 +134,19 @@ def appTestingView():
 @login_required
 def appTestProcess():
     indexing = request.form['test-type'] == 'nb'
+    npart = int(request.form['npart'])
+    nsmote = int(request.form['nsmote']) * 100
 
     db_session = g.get('dbsession')
     all_hasil_lab = db_session.query(HasilLab).all()
     all_dataset = list( map( array_from_hl, all_hasil_lab ) )
     # Get synthetic data from smote
-    smoted = smote.smote()
+    smoted = smote.smote(N=nsmote)
     dataset = all_dataset + smoted
+    random.shuffle(dataset)
 
     t0 = time.time()
-    cv_result = testing.cross_validation(dataset, indexing=indexing)
+    cv_result = testing.cross_validation(dataset, indexing=indexing, cv_p=npart)
     t1 = time.time()
     ttime =  t1 - t0
 
