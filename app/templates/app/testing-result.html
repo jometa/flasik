@@ -40,6 +40,39 @@
     </div>
   </section><!-- #intro -->
 
+  <section id="cm" style="padding-top: 120px; padding-bottom: 120px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <td>Fold</td>
+                <td>TP</td>
+                <td>FP</td>
+                <td>TN</td>
+                <td>FN</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for pr in cv.presults %}
+                <tr>
+                  <td>
+                    {{ loop.index }}
+                  </td>
+                  <td>{{ pr.tp }}</td>
+                  <td>{{ pr.fp }}</td>
+                  <td>{{ pr.tn }}</td>
+                  <td>{{ pr.fn }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
   {% include 'commons/footer.html' %}
 
   <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
