@@ -101,22 +101,35 @@ def appKlasifikasiProses():
       jenis_ikan_id=int(request.form['jenis_ikan_id']),
       # Now insert the remaining attributes
       **kw_hl_attrs)
-
-
-    db_session = g.get('dbsession')
-    hl = db_session.query(HasilLab).filter(HasilLab.kesimpulan == 1).first()
-    # hl.indol = 0
-    # hl.vp_test = 1
-    raw_data = db_session.query(HasilLab).all()
-    data = list(map(array_from_hl, raw_data))
     inputVector = array_from_hl(hl)[:-1]
 
-    target_class = nb2(inputVector, data)
+    nsmote = 4
 
-    # Find instance on target_class
-    raw_data = db_session.query(HasilLab).filter(HasilLab.kesimpulan == target_class).all()
-    data = list(map(array_from_hl, raw_data))
-    sim, _, instance = knn(inputVector, data)
+    db_session = g.get('dbsession')
+    all_hasil_lab = db_session.query(HasilLab).all()
+    all_dataset = list( map( array_from_hl, all_hasil_lab ) )
+
+    # Get synthetic data from smote
+    smoted = smote.smote(N=nsmote)
+    dataset = all_dataset + smoted
+    random.shuffle(dataset)
+
+    sim, target_class, instance = knn(inputVector, dataset)
+
+    # db_session = g.get('dbsession')
+    # hl = db_session.query(HasilLab).filter(HasilLab.kesimpulan == 1).first()
+    # # hl.indol = 0
+    # # hl.vp_test = 1
+    # raw_data = db_session.query(HasilLab).all()
+    # data = list(map(array_from_hl, raw_data))
+    # inputVector = array_from_hl(hl)[:-1]
+
+    # target_class = nb2(inputVector, data)
+
+    # # Find instance on target_class
+    # raw_data = db_session.query(HasilLab).filter(HasilLab.kesimpulan == target_class).all()
+    # data = list(map(array_from_hl, raw_data))
+    # sim, _, instance = knn(inputVector, data)
 
     # Convert array instance to HasilLab entity
     hl_knn = hl_from_array(instance)
@@ -126,8 +139,8 @@ def appKlasifikasiProses():
 
     # Save new case
     hl.kesimpulan = target_class
-    db_session.add(hl)
-    db_session.commit()
+    # db_session.add(hl)
+    # db_session.commit()
 
     kesimpulan = 'Positif ' if target_class == 1 else 'Negatif '
     kesimpulan += 'Vibrio Alginolytcus'
