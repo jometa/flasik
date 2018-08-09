@@ -59,9 +59,23 @@ def appDataEditView():
     db_session = g.get('dbsession')
     list_jenis_ikan = db_session.query(JenisIkan).all()
     hl = db_session.query(HasilLab).filter(HasilLab.id == int(data_id)).first()
+
+    # Get attributes with radio control and two values options.
+    radio_2vals = [ pair for pair in HASIL_LAB_ATTRS if pair[1] == 'radio' and len(pair) == 2 ]
+
+    # Get attributes with radio control and more than 2 values options.
+    radio_multi = [ pair for pair in HASIL_LAB_ATTRS if pair[1] == 'radio' and len(pair) > 2 ]
+
+    # Get attributes with select control and more than 2 values options.
+    select_attrs = [ pair for pair in HASIL_LAB_ATTRS if pair[1] != 'radio' and len(pair) > 2 ]
+
     return render_template('app/data-edit.html',
       list_jenis_ikan=list_jenis_ikan,
-      hl=hl)
+      hl=hl,
+      radio_2vals=radio_2vals,
+      radio_multi=radio_multi,
+      select_attrs=select_attrs,
+      getattr=getattr) # Passing gettatr. because jinja hide it somehow.
 
 @bp.route('/klasifikasi', methods=['GET'])
 @dbsession_required
@@ -69,6 +83,7 @@ def appDataEditView():
 def appKlasifikasiView():
     db_session = g.get('dbsession')
     list_jenis_ikan = db_session.query(JenisIkan).all()
+
     return render_template('app/klasifikasi.html', 
       uname=session['username'], 
       attrs=HASIL_LAB_ATTRS,

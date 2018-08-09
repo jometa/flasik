@@ -63,11 +63,91 @@
                     </select>
                   </div>
 
+                  {% for (atr, _) in radio_2vals %}
+                    <fieldset class="form-group mb-3" style="border-bottom: 1px solid #DDD;">
+                      <div class="row">
+                        <legend class="col-form-label col-sm-6 pt-0">
+                          {{ atr }}
+                        </legend>
+                        <div class="col-sm-6">
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="{{ atr }}" value="1"
+                                {% if getattr(hl, atr) == 1 %}
+                                  checked
+                                {% endif %}>
+                              <label class="form-check-label" for="exampleRadios2">
+                                Positif
+                              </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="{{ atr }}" value="0" 
+                                {% if getattr(hl, atr) == 0 %}
+                                  checked
+                                {% endif %}>
+                              <label class="form-check-label" for="exampleRadios1">
+                                Negatif
+                              </label>
+                            </div>
+                        </div>
+                      </div>
+                    </fieldset>
+                  {% endfor %}
+
+                {% for (atr, tp, adesc) in radio_multi %}
+                  <fieldset class="form-group mb-3" style="border-bottom: 1px solid #DDD;">
+                    <div class="row">
+                      <legend class="col-form-label col-sm-6 pt-0">
+                        {{ atr }}
+                      </legend>
+                      <div class="col-sm-6">
+                          {% for v, k in adesc %}
+                            <div class="form-check form-check-inline">
+                              <input class="form-check-input" type="radio" name="{{ atr }}" 
+                                id="exampleRadios2" value="{{ v }}"
+                                {% if getattr(hl, atr) == v %}
+                                  checked
+                                {% endif %} >
+                              <label class="form-check-label" for="exampleRadios2">
+                                {{ k }}
+                              </label>
+                            </div>
+                          {% endfor %}
+                      </div>
+                    </div>
+                  </fieldset>
+                {% endfor %}
+
+                {% for (atr, _, adesc) in select_attrs %}
+                  <div class="form-group row pb-3" style="border-bottom: 1px solid #DDD;">
+                    <label class="col-sm-6 col-form-label">{{ atr }}</label>
+                    <div class="col-sm-6">
+                      <select class="form-control" name="{{ atr }}">
+                        {% for v, k in adesc %}
+                          <option value="{{ v }}"
+                            {% if v == getattr(hl, atr) %}
+                              selected
+                            {% endif %}
+                          >{{k}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                {% endfor %}
+
                   <div class="form-group">
                     <label>Kesimpulan</label>
                     <select class="form-control" name="kesimpulan">
-                      <option value="1">Positif Vibrio Alginolyctus</option>
-                      <option value="0">Negatif Vibrio Alginolyctus</option>
+                      <option 
+                        value="1"
+                        {% if (hl.kesimpulan == 1) %}
+                          selected
+                        {% endif %}
+                      >Positif Vibrio Alginolyctus</option>
+                      <option 
+                        value="0"
+                        {% if (hl.kesimpulan == 0) %}
+                          selected
+                        {% endif %}>Negatif Vibrio Alginolyctus</option>
                     </select>
                   </div>
 
