@@ -51,10 +51,54 @@ def appDataTambahView():
       attrs=HASIL_LAB_ATTRS,
       list_jenis_ikan=list_jenis_ikan)
 
+@bp.route('/data/tambah', methods=['POST'])
+@dbsession_required
+@login_required
+def appDataTambahProses():
+    kw_hl_attrs = {
+      it[0]: int(request.form[it[0]])
+      for it in HASIL_LAB_ATTRS
+    }
+    hl = HasilLab(
+      jenis_ikan_id=int(request.form['jenis_ikan_id']),
+      kesimpulan=int(request.form['kesimpulan']),
+      # Now insert the remaining attributes
+      **kw_hl_attrs)
+    db_session = g.get('dbsession')
+    db_session.add(hl)
+    db_session.commit()
+    return redirect('/app/data/list')
+
 @bp.route('/data/edit', methods=['GET'])
 @dbsession_required
 @login_required
 def appDataEditView():
+    data_id = request.args['id']
+    db_session = g.get('dbsession')
+    list_jenis_ikan = db_session.query(JenisIkan).all()
+    hl = db_session.query(HasilLab).filter(HasilLab.id == int(data_id)).first()
+
+    # Get attributes with radio control and two values options.
+    radio_2vals = [ pair for pair in HASIL_LAB_ATTRS if pair[1] == 'radio' and len(pair) == 2 ]
+
+    # Get attributes with radio control and more than 2 values options.
+    radio_multi = [ pair for pair in HASIL_LAB_ATTRS if pair[1] == 'radio' and len(pair) > 2 ]
+
+    # Get attributes with select control and more than 2 values options.
+    select_attrs = [ pair for pair in HASIL_LAB_ATTRS if pair[1] != 'radio' and len(pair) > 2 ]
+
+    return render_template('app/data-edit.html',
+      list_jenis_ikan=list_jenis_ikan,
+      hl=hl,
+      radio_2vals=radio_2vals,
+      radio_multi=radio_multi,
+      select_attrs=select_attrs,
+      getattr=getattr) # Passing gettatr. because jinja hide it somehow.
+
+@bp.route('/data/edit', methods=['POST'])
+@dbsession_required
+@login_required
+def appDataEditProses():
     data_id = request.args['id']
     db_session = g.get('dbsession')
     list_jenis_ikan = db_session.query(JenisIkan).all()
